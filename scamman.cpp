@@ -1,11 +1,20 @@
 #include "scamman.h"
 
 QMap<QString, SCam*> SCamMan::named_cams;
+SCamMan* SCamMan::theMan = Q_NULLPTR;
 
 
 SCamMan::SCamMan(QObject *parent) : QObject(parent)
 {
     this->load();
+}
+
+SCamMan *SCamMan::getCamMan()
+{
+    if (theMan==Q_NULLPTR)
+        theMan = new SCamMan();
+
+    return theMan;
 }
 
 

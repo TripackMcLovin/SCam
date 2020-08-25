@@ -10,11 +10,14 @@
 class LIB_EXPORT SCamMan : public QObject
 {
     Q_OBJECT
-public:
+private: //object is only available through the static getter
     explicit SCamMan(QObject *parent = nullptr);
+public:
+    static SCamMan* getCamMan();
 
 private:
     static QMap<QString, SCam*> named_cams;
+    static SCamMan* theMan;
 
 public:
     static void load(); // ToDo: remove static

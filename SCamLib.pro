@@ -20,6 +20,7 @@ DEFINES += SCAM_LIB_EXPORT
 
 SOURCES += \
     dummycam.cpp \
+    ffmpeg.cpp \
     scamlib.cpp \
     scam.cpp \
     scamman.cpp \
@@ -31,6 +32,7 @@ SOURCES += \
 
 HEADERS += \
     dummycam.h \
+    ffmpeg.h \
     scamlib.h \
     scam.h \
     scamman.h \
@@ -43,6 +45,7 @@ HEADERS += \
 INCLUDEPATH += /usr/lib64
 INCLUDEPATH += /usr/local/include/opencv4
 INCLUDEPATH += /usr/include/opencv4
+INCLUDEPATH += /usr/include/ffmpeg
 INCLUDEPATH += /usr/local/lib
 INCLUDEPATH += /opt/pylon/include
 
@@ -59,4 +62,4 @@ unix {
 }
 !isEmpty(target.path): INSTALLS += target
 
-DESTDIR = $$_PRO_FILE_PWD_/../../bin
+DESTDIR = $$_PRO_FILE_PWD_/bin

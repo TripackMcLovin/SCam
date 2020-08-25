@@ -3,7 +3,7 @@
 
 #include "scamlib.h"
 #include "scam.h"
-#include <pylon/PylonIncludes.h>
+#include "pylon/PylonIncludes.h"
 
 #include <QDebug>
 
