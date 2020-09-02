@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QImage>
 #include "scam.h"
+#include <QDir>
 
 #include <cstring>
 
@@ -44,29 +45,32 @@ struct ImageData
 */
 
 
-class SCamVideo : public SCam
+class LIB_EXPORT SCamVideo : public SCam
 {
     //Q_OBJECT
 public:
-    explicit SCamVideo(QString fname, QObject *parent = nullptr);
+    explicit SCamVideo(QString dir, QString fname, QObject *parent = nullptr);
     ~SCamVideo() override;
 
     //QString getID() override;
 
-    QImage *getNewestImage() override;
+    //QImage *getNewestImage() override; //use the one of the baseclass
     //QString getFrameID() override;
-
-    bool open_internal() override;
-    bool activate_internal() override;
 
     //bool isReady() override; //==ACTIVE, ready to capture
 
+
+    bool open_internal() override;
+    bool activate_internal() override;
     bool deactivate_internal() override;
     bool close_internal() override;
 
     //double getFPS() override;
 
     bool capture_internal() override;
+
+    static QList<SCam*> loadCams(QStringList &directoryList);
+    static QList<SCam*> loadCams(QString &directory);
 
 private:
     QString m_filename;
@@ -76,6 +80,8 @@ private:
     //double m_frameTimeStamp;
     //better:
     QTime m_timeStamp;
+
+
 
     //int m_width;
     //int m_height;
@@ -105,6 +111,13 @@ signals:
     //void newImage() override;
 
 public slots:
+
+    //nothing that can/should be changed in a video
+    bool setBrightness(double b) override{return true;};
+
+    bool setContrast(double c) override{return true;};
+
+    void setFormat(int formatIndex) override{};
 
 };
 

@@ -37,11 +37,11 @@ namespace {
 */
 
 
-SCamVideo::SCamVideo(QString fname, QObject *parent) :
-        SCam(QString("file_").append(fname),
-             QString("file_").append(fname),
+SCamVideo::SCamVideo(QString dir, QString fname, QObject *parent) :
+        SCam(fname,//readable name
+             dir.append("/").append(fname),//internal name
              2, parent),
-    m_filename(fname),
+    m_filename(internalName), //which is basically the the internal name
     m_fileFramerate(1.0),
     m_timeStamp(),
     m_formatCtx(Q_NULLPTR),
@@ -62,6 +62,7 @@ SCamVideo::SCamVideo(QString fname, QObject *parent) :
         setState(SCam::CLOSED);
         qInfo() << "SCamVideo for"<<m_filename<<" created!";
     } else {
+        setState(SCam::ERROR);
         qInfo() << "failed to create SCamVideo for "<<m_filename<<"!";
     }
 }
@@ -368,4 +369,40 @@ bool SCamVideo::capture_internal()
         qInfo() << "capture while locked...";
     }
     return false;
+}
+
+QList<SCam *> SCamVideo::loadCams(QStringList &directoryList)
+{
+    qInfo() << "SCamVideo::loadCams() from a list of "<< directoryList.length()<<"directorys";
+    QList<SCam *> ret;
+    for(QString str:directoryList){
+        QList<SCam*> scl=loadCams(str);
+        if(!scl.isEmpty()) ret.append(scl);
+    }
+
+    return QList<SCam *>(ret);
+}
+
+QList<SCam *> SCamVideo::loadCams(QString &directory)
+{
+    QList<SCam*> ret;
+
+    qInfo() << "SCamVideo::loadCams() loading videos from directory "<<directory;
+    //1.make a list of suitable files in the directory
+    QDir dir(directory);
+    dir.setFilter(QDir::Files);
+    dir.setSorting(QDir::Name);
+
+    QFileInfoList list = dir.entryInfoList();
+    QStringList files;
+    for(QFileInfo fi:list){
+        //qInfo() << qPrintable(QString("%1 bytes in %2").arg(fi.size(), 10).arg(fi.fileName()));
+        if (fi.fileName().endsWith("mp4")) {
+            ret.append(new SCamVideo(directory,fi.fileName()));
+        }
+    }
+
+    if (ret.isEmpty()) qInfo() << "     no files found!";
+
+    return ret;
 }

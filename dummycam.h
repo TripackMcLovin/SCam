@@ -3,7 +3,7 @@
 
 #include "scam.h"
 
-class DummyCam : public SCam
+class LIB_EXPORT DummyCam : public SCam
 {
 public:
     explicit DummyCam();
