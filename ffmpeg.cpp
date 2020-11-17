@@ -60,7 +60,7 @@ SCamVideo::SCamVideo(QString dir, QString fname, QObject *parent) :
 
     if (QFile(m_filename).exists()) {
         setState(SCam::CLOSED);
-        qInfo() << "SCamVideo for"<<m_filename<<" created!";
+        qInfo() << "SCamVideo for"<<m_filename<<" created, readambeName:"<<readableName;
     } else {
         setState(SCam::ERROR);
         qInfo() << "failed to create SCamVideo for "<<m_filename<<"!";
@@ -211,14 +211,15 @@ bool SCamVideo::open_internal()
         m_imageSize.setHeight( m_codecCtx->height );
                     //m_imageSize.setHeight( static_cast<int>(m_capture->get(CV_CAP_PROP_FRAME_HEIGHT)));
 
-        m_numBytes = avpicture_get_size(AV_PIX_FMT_RGB24, m_codecCtx->width, m_codecCtx->height);
+        m_numBytes = avpicture_get_size(AV_PIX_FMT_RGB0, m_codecCtx->width, m_codecCtx->height);
+        //m_numBytes = avpicture_get_size(AV_PIX_FMT_RGB24, m_codecCtx->width, m_codecCtx->height);
         m_buffer = (uint8_t*)av_malloc(m_numBytes*sizeof (uint8_t));
 
         for (int i=0;i<m_numBuf; i++){
             m_imgProcessors.append( new ImgProc(m_buffer,
                                          m_imageSize.width(),
                                          m_imageSize.height(),
-                                         QImage::Format_RGB888) );
+                                         QImage::Format_RGBX8888) );
         }
 
 
@@ -232,7 +233,7 @@ bool SCamVideo::open_internal()
         setState(OPEN);
         return true;
     } else {
-        qInfo() << "failed to open video";
+        qInfo() << "failed to open video, status is"<<getStatusString();
 
         return false;
     }
@@ -246,7 +247,8 @@ bool SCamVideo::activate_internal()
     qInfo() << "    status ="<<this->getStatusString();
 
     if (m_status==CLOSED){
-        this->open();
+        this->open_internal();
+        setState(OPEN);
         qInfo() << "    status ="<<this->getStatusString();
     }
 
@@ -299,7 +301,8 @@ bool SCamVideo::capture_internal()
 {
     //qInfo() << "SCamVideo::capture()";
 
-    if (m_opMutex.tryLock()){
+    //lock was set already by scam on capture
+    //if (m_opMutex.tryLock()){
         if(m_status==ACTIVE){
 
             m_index++;
@@ -365,9 +368,11 @@ bool SCamVideo::capture_internal()
         }
 
         //emit processedImage(img);
-    } else{
+        /*
+    } else {
         qInfo() << "capture while locked...";
     }
+    */
     return false;
 }
 

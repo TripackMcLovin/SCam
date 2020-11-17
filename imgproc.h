@@ -104,6 +104,7 @@ public:
 
 private:
     static uint32_t instanceCounter;
+    //for now this is not used, we would need it if we have some specific input from the file away from RGB888
     static QMap<int,int> formatMap;
 
     IP_format m_ipFormat;

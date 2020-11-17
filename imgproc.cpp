@@ -1,7 +1,7 @@
 #include "imgproc.h"
 
 uint32_t ImgProc::instanceCounter=0;
-QMap<int,int> ImgProc::formatMap={{CV_8UC3,CV_8UC3}};
+QMap<int,int> ImgProc::formatMap={{CV_8UC3,CV_8UC3},{QImage::Format_RGB888,CV_8UC3}};
 
 
 ImgProc::ImgProc(QImage &img, bool deepCopy, QString name) :
