@@ -110,8 +110,8 @@ public:
     SC_STATE getStatus(){return m_status;}
     QString getStatusString();
 
-    const QString readableName; //also the one to be searched with
-    const QString internalName; //like a linux file descriptor e.g. /dev/video0
+    QString readableName; //also the one to be searched with
+    QString internalName; //like a linux file descriptor e.g. /dev/video0
 
     const int m_numBuf;
     int m_index;

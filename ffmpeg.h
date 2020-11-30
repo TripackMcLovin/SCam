@@ -50,15 +50,7 @@ class LIB_EXPORT SCamVideo : public SCam
     //Q_OBJECT
 public:
     explicit SCamVideo(QString dir, QString fname, QObject *parent = nullptr);
-    ~SCamVideo() override;
-
-    //QString getID() override;
-
-    //QImage *getNewestImage() override; //use the one of the baseclass
-    //QString getFrameID() override;
-
-    //bool isReady() override; //==ACTIVE, ready to capture
-
+    ~SCamVideo();
 
     bool open_internal() override;
     bool activate_internal() override;

@@ -7,6 +7,7 @@
 #include "basler.h"
 #include "dummycam.h"
 #include "ffmpeg.h"
+#include "idscam.h"
 
 enum SubSys{
     SCM_NONE=0,

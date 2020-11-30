@@ -21,6 +21,7 @@ DEFINES += SCAM_LIB_EXPORT
 SOURCES += \
     dummycam.cpp \
     ffmpeg.cpp \
+    idscam.cpp \
     scamlib.cpp \
     scam.cpp \
     scamman.cpp \
@@ -33,6 +34,7 @@ SOURCES += \
 HEADERS += \
     dummycam.h \
     ffmpeg.h \
+    idscam.h \
     scamlib.h \
     scam.h \
     scamman.h \

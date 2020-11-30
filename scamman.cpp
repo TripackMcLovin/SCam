@@ -32,21 +32,22 @@ void SCamMan::load(int subSys, QStringList videoLocations)
     if ( subSys & SCM_V4L2){
         QList<SCam*> cams;
         cams.append( V4L2Cam::loadCams() );
+        qInfo() <<"V4L2Cams loaded, now we have"<<cams.count()<<"cams in the list";
         for(auto c:cams){
             named_cams.insert(QString("v4l2_").append(c->readableName),c);
         }
-        qInfo() <<"V4L2Cams loaded, now we have"<<cams.count()<<"cams in the list";
+
     }
 
     if (subSys & SCM_IDS) {
         QList<SCam*> cams;
-        //cams.append( IDS::loadCams(IDS::USB|IDS::ETH) ); //TODO: implement me
-        //qInfo() <<"IDS-Cams loaded, now we have"<<cams.count()<<"cams in the list";
+        cams.append( IDSCam::loadCams(IDS_USB|IDS_ETH) ); //TODO: implement me
+        qInfo() <<"IDS-Cams loaded, now we have"<<cams.count()<<"cams in the list";
         for(auto c:cams){
-            named_cams.insert(QString("ids_").append(c->readableName),c);
+            named_cams.insert(c->readableName,c);
         }
     }
-
+/*
     if (subSys & SCM_BASLER) {
         QList<SCam*> cams;
         cams.append( Basler::loadCams() );
@@ -55,7 +56,7 @@ void SCamMan::load(int subSys, QStringList videoLocations)
             named_cams.insert(QString("basler_").append(c->readableName),c);
         }
     }
-
+*/
     //videofiles in specific location, readable name is the filename
     if (subSys & SCM_FFMPEG && !videoLocations.isEmpty() ){
         QList<SCam*> cams;
